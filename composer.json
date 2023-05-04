@@ -1,0 +1,11 @@
+{
+    "name": "sisloga/apirest-slim4",
+    "description": "Marco de trabajo slim4 para API-Rest",
+    "require": {
+        "slim/slim": "4.*",
+        "slim/psr7": "^1.6",
+        "php-di/php-di": "^6.2",
+        "nategood/httpful": "*",
+        "php": ">=7.4"
+    }
+}
