@@ -1,3 +1,3 @@
 <?php 
-    require __DIR__ . '/Usuarios/routes.php';
+    require __DIR__ . '/Home/routes.php';
 ?>

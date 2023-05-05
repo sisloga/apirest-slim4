@@ -6,14 +6,27 @@ const ERRORES=array(
     '23505'=>array('success'=>false,'result'=>-1,'icon'=>'pi pi-exclamation-triangle','header'=>'ERROR 42703 - ERROR CAMPO UNICO','message'=>null),
 );
 class db{
+    private static $instancia;
+    private $db;
     private $options=[
         PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE=>PDO::FETCH_ASSOC
     ];
-    private $db;
+
     function __construct($settings){
-       $this->db=new PDO($settings['DB_DSN'].":host=" . $settings['DB_HOST'] . ";dbname=" . $settings['DB_NAME'].";port=".$settings['DB_PORT'], $settings['DB_USER'], $settings['DB_PASSWORD'],$this->options);
+        $this->db=new PDO(
+            $settings['DB_DSN'].":host=" . $settings['DB_HOST'] . ";dbname=" . $settings['DB_NAME'].";port=".$settings['DB_PORT'], $settings['DB_USER'], $settings['DB_PASSWORD'],$this->options
+        );
     }
+
+    public static function getInstancia() {
+      if (  !self::$instancia instanceof self)
+      {
+         self::$instancia = new self;
+      }
+      return self::$instancia;
+    }
+
     private function procesarError($except){
         if(isset(ERRORES[$except->getCode()])){
             //en este swith se van a manejar las opciones especiales de algunos errores.
@@ -42,6 +55,7 @@ class db{
         }
         return $response;
     }
+
     public function select($query){
         try {
             $statement=$this->db->prepare($query);
@@ -51,6 +65,7 @@ class db{
             return $this->procesarError($e);
 		} 
     }
+
     public function selectOne($query){
         try {
             $statement=$this->db->prepare($query);
@@ -66,6 +81,7 @@ class db{
             return $this->procesarError($e);
 		} 
     }
+
     public function procedure(String $procedure,array $values,bool $skipResult=false){
         try {
             if($skipResult==false){
@@ -89,6 +105,7 @@ class db{
             return $this->procesarError($e);
 		} 
     }
+
     public function update($query){
         try {
             $statement=$this->db->prepare($query);
@@ -99,6 +116,7 @@ class db{
             return $this->procesarError($e);
 		} 
     }
+
     public function delete($query){
         try {
             $statement=$this->db->prepare($query);
@@ -108,6 +126,7 @@ class db{
             return $this->procesarError($e);
 		} 
     }
+
     public function insert($query){
         try {
             $statement=$this->db->prepare($query);
