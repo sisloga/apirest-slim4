@@ -3,6 +3,7 @@
     require __DIR__ . '/db.php'; 
     $container->set('db',function(ContainerInterface $cont){
         $settings=$cont->get('db_settings');
-        return new db($settings);
+        $retcont = db::getInstancia($settings);
+        return $retcont;
     });
 ?>

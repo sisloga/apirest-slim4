@@ -19,10 +19,10 @@ class db{
         );
     }
 
-    public static function getInstancia() {
+    public static function getInstancia($settings) {
       if (  !self::$instancia instanceof self)
       {
-         self::$instancia = new self;
+         self::$instancia = new self($settings);
       }
       return self::$instancia;
     }
